@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GradesPrototype.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -199,6 +200,8 @@ namespace GradesPrototype.Data
     // TODO: Exercise 1: Task 2e: Inherit from the User class
     public class Teacher : User
     {
+        private const int MAX_CLASS_SIZE = 8;
+
         public int TeacherID { get; set; }
 
         public string FirstName { get; set; }
@@ -230,17 +233,25 @@ namespace GradesPrototype.Data
         // Enroll a student in the class for this teacher
         public void EnrollInClass(Student student)
         {
-            // Verify that the student is not already enrolled in another class
-            if (student.TeacherID == 0)
+            int numberOfStudents = DataSource.Students.Count(e => e.TeacherID == this.TeacherID);
+            if (numberOfStudents == MAX_CLASS_SIZE)
             {
-                // Set the TeacherID property of the student
-                student.TeacherID = TeacherID;
-            }
-            else
+                // Verify that the student is not already enrolled in another class
+                if (student.TeacherID == 0)
+                {
+                    // Set the TeacherID property of the student
+                    student.TeacherID = TeacherID;
+                }
+                else
+                {
+                    // If the student is already assigned to a class, throw an ArgumentException
+                    throw new ArgumentException("Student", "Student is already assigned to a class");
+                }
+            } else
             {
-                // If the student is already assigned to a class, throw an ArgumentException
-                throw new ArgumentException("Student", "Student is already assigned to a class");
+                throw new ClassFullException("The class is full", Class);
             }
+
         }
 
         // Remove a student from the class for this teacher

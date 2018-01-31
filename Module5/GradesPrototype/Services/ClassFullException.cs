@@ -13,11 +13,11 @@ namespace GradesPrototype.Services
         // TODO: Exercise 3: Task 1a: Add custom data: the name of the class that is full
         // Code that catches this exception can query the public ClassName property to determine which class caused the exception
 
-        private string _className;
+        private string className;
 
         public string ClassName
         {
-            get { return _className; }
+            get { return className; }
         }
 
 
@@ -31,6 +31,23 @@ namespace GradesPrototype.Services
         // TODO: Exercise 3: Task 1c: Add custom constructors that populate the _className field.
         // The code that invokes this exception is expected to provide the class name
 
+        public ClassFullException(string message, Exception innerException) : base(message, innerException)
+        {
+
+        }
+
+        public ClassFullException(string message, string _className)
+    : base(message)
+        {
+            className = _className;
+        }
+
+        public ClassFullException(string message, string _className, Exception inner)
+                : base(message, inner)
+        {
+            className = _className;
+        }
+
 
 
         #region Code provided to handle deserialization of a custom exception
@@ -38,10 +55,10 @@ namespace GradesPrototype.Services
         // The _className field contains custom data, so it must be handled explicitly
         // The details are outside the scope of this lab
         protected ClassFullException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+                    : base(info, context)
         {
             // Populate the _className member from the deserialization stream 
-            _className = info.GetString("ClassName");
+            className = info.GetString("ClassName");
         }
 
 
@@ -52,7 +69,7 @@ namespace GradesPrototype.Services
                 throw new ArgumentException("info");
             }
             base.GetObjectData(info, context);
-            info.AddValue("ClassName", _className, typeof(string));
+            info.AddValue("ClassName", className, typeof(string));
         }
         #endregion
     }

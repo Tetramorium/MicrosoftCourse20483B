@@ -47,6 +47,11 @@ namespace GradesPrototype.Controls
                 MessageBox.Show("The student must have a password", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            else if (this.password.Text.Length < 6)
+            {
+                MessageBox.Show("The student must have a minimum password length of 6", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             // Indicate that the data is valid
             this.DialogResult = true;
