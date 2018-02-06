@@ -42,8 +42,9 @@ namespace GradesPrototype.Views
         #endregion
 
         #region Event Members
-        public delegate void StudentSelectionHandler(object sender, StudentEventArgs e);
-        public event StudentSelectionHandler StudentSelected;
+        //public delegate void StudentSelectionHandler(object sender, StudentEventArgs e);
+        //public event StudentSelectionHandler StudentSelected;
+        public EventHandler<StudentEventArgs> StudentSelected;
         #endregion
 
         #region Event Handlers
@@ -57,7 +58,7 @@ namespace GradesPrototype.Views
             if (sender != null)
             {
                 Student student = (Student)btnClicked.Tag;
-                this.StudentSelected?.Invoke(sender, new StudentEventArgs(student));
+                this.StudentSelected?.Invoke(sender, new StudentEventArgs(student, "1"));
             }
         }
         #endregion
@@ -68,7 +69,7 @@ namespace GradesPrototype.Views
     {
         public Student Child { get; set; }
 
-        public StudentEventArgs(Student s)
+        public StudentEventArgs(Student s, string str)
         {
             Child = s;
         }

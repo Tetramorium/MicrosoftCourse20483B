@@ -32,8 +32,8 @@
                 <y:LogonPage x:Name="logonPage" LogonSuccess ="Logon_Success" LogonFailed="Logon_Failed" Visibility="Collapsed" />
                 
                 <!-- TODO: Exercise 1: Task 5c: Catch the StudentSelected event and call the studentsPage_StudentSelected event handler-->
-                <y:StudentsPage x:Name="studentsPage" StudentSelected="studentsPage_StudentSelected" Visibility="Collapsed" />
-                
+                <y:StudentsPage x:Name="studentsPage" Visibility="Collapsed" />
+                <!--<y:StudentsPage x:Name="studentsPage" StudentSelected="studentsPage_StudentSelected" Visibility="Collapsed" />-->
                 <y:StudentProfile x:Name="studentProfile" Back="studentPage_Back" Visibility="Collapsed" />
                 <!-- CONTENT -->
             </Grid>

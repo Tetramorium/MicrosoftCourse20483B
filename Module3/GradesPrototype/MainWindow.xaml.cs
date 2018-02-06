@@ -28,7 +28,10 @@ namespace GradesPrototype
         {
             InitializeComponent();
 
+            this.studentsPage.StudentSelected += studentsPage_StudentSelected;
+
             DataSource.CreateData();
+            Test.test();
 
             GotoLogon();
         }
