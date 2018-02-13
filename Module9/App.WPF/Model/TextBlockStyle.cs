@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,19 +50,39 @@ namespace App.WPF.Model
         }
     }
 
-    [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
+    [ValueConversion(typeof(SolidColorBrush), typeof(Brush))]
     public class ColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
                               System.Globalization.CultureInfo culture)
         {
-            return new SolidColorBrush((Color)value);
+            dynamic d = value;
+            SolidColorBrush c = d.GetValue(this, null);    
+            return (Brush)c;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
                                   System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    [ValueConversion(typeof(Color), typeof(Brush))]
+    public class BrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter,
+                              System.Globalization.CultureInfo culture)
+        {
+            return (Brush)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+                                  System.Globalization.CultureInfo culture)
+        {
+            dynamic d = value;
+            Brush c = d.GetValue(this, null);
+            return (SolidColorBrush)c;
         }
     }
 }

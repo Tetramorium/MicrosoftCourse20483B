@@ -11,6 +11,7 @@
     <Window.Resources>
         <model:TextBlockStyle x:Key="style" Content="Initial Value" FontColor="Red"/>
         <model:ColorConverter x:Key="colorConverter"/>
+        <model:BrushConverter x:Key="brushConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,26 +23,16 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Test" Width="50" Height="50" Grid.Column="0" Grid.Row="1">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5, 0.5" EndPoint="1.5, 1.5">
-                    <GradientStop Color="AliceBlue" Offset="0"/>
-                    <GradientStop Color="Aqua" Offset="0.5"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Foreground>
-                <SolidColorBrush Color="Red"/>
-            </Button.Foreground>
-        </Button>
+        <Button Content="Test" Width="50" Height="50" Grid.Column="0" Grid.Row="1" Style="{StaticResource CustomButtonStyle}"/>
         <TextBlock Text="Test" Foreground="Aqua" Width="50" Height="50" Grid.Column="1"></TextBlock>
         <customControl:Photo Grid.Column="0" Grid.Row="2"></customControl:Photo>
         <!--https://stackoverflow.com/a/22253816-->
         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Source = {StaticResource style}, Path=Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Background="Black" Grid.Column="2" Grid.Row="2" Text="{Binding Source = {StaticResource style}, Path=Content, Mode=TwoWay}" Foreground="{Binding Source = {StaticResource style},Converter={StaticResource colorConverter} , Path=FontColor, Mode=OneWay}" />
-        <ComboBox Name="cb_ColorPicker" Width="100" Height="20" Grid.Column="0" Grid.Row="0" SelectedItem="{Binding Source={StaticResource style}, Path=FontColor, Mode=TwoWay}">
+        <TextBlock Background="Black" Grid.Column="2" Grid.Row="2" Text="{Binding Source = {StaticResource style}, Path=Content, Mode=TwoWay}" Foreground="{Binding Source = {StaticResource style},Converter={StaticResource brushConverter} , Path=FontColor, Mode=TwoWay}" />
+        <ComboBox IsSynchronizedWithCurrentItem="True" Name="cb_ColorPicker" Width="100" Height="20" Grid.Column="0" Grid.Row="0" SelectedItem="{Binding Source={StaticResource style},Converter={StaticResource brushConverter}, Path=FontColor, Mode=TwoWay}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ComboBoxItem}">
-                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self},Converter={StaticResource colorConverter}, Path=DataContext}"/>
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
