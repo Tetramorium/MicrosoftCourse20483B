@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+        Title="MainWindow" Height="95" Width="153" Loaded="Window_Loaded">
     <Grid>
-        <Button x:Name="bt_PlaySong" Content="Play Song" HorizontalAlignment="Left" Margin="176,202,0,0" VerticalAlignment="Top" Width="75" Click="bt_PlaySong_Click"/>
+        <Button x:Name="bt_PlaySong" Content="Play Song" HorizontalAlignment="Left" Margin="35,16,0,0" VerticalAlignment="Top" Width="75" Click="bt_PlaySong_Click"/>
     </Grid>
 </Window>
