@@ -13,7 +13,13 @@ namespace EncryptionWPF.Tools
     {
         private static byte[] rgbKey;
         private static byte[] rgbIV;
+
+        private static byte[] assymKeyWithPrivate;
+        private static byte[] assymKeyWithoutPrivate;
+
         private static AesManaged algorithm = new AesManaged();
+
+        private const string HashKey = "abc123";
 
         public static void Setup(string _Password, byte[] _Salt)
         {
@@ -23,6 +29,16 @@ namespace EncryptionWPF.Tools
 
             rgbKey = rgb.GetBytes(algorithm.KeySize / 8);
             rgbIV = rgb.GetBytes(algorithm.BlockSize / 8);
+
+            using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
+            {
+                // The receiver needs the private key to decrypt
+
+                assymKeyWithPrivate = rsaProvider.ExportCspBlob(true);
+
+                // Provider does not need the private key
+                assymKeyWithoutPrivate = rsaProvider.ExportCspBlob(false);
+            }
         }
 
         public static byte[] SymmetricEncryption(byte[] _Data)
@@ -71,7 +87,42 @@ namespace EncryptionWPF.Tools
             return data;
         }
 
+        public static byte[] GenerateHash(byte[] _DataToHash)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(HashKey); ;
 
+            using (HMACSHA512 hashAlgorithm = new HMACSHA512(bytes))
+            {
+                using (MemoryStream bufferStream = new MemoryStream(_DataToHash))
+                {
+                    return hashAlgorithm.ComputeHash(bufferStream);
+                }
+            }
+        }
+
+        public static byte[] AsymmetricEncryption(byte[] _Data)
+        {
+            using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
+            {
+                bool useOaePadding = true;
+
+                rsaProvider.ImportCspBlob(assymKeyWithoutPrivate);
+
+                return rsaProvider.Encrypt(_Data, useOaePadding);
+            }
+        }
+
+        public static byte[] AsymmetricDecryption(byte[] _Data)
+        {
+            using (RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider())
+            {
+                bool useOaePadding = true;
+
+                rsaProvider.ImportCspBlob(assymKeyWithPrivate);
+
+                return rsaProvider.Decrypt(_Data, useOaePadding);
+            }
+        }
 
         // https://codereview.stackexchange.com/a/93622
         // Random salt Generator
